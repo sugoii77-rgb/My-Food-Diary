@@ -449,6 +449,106 @@ input[type="range"]::-moz-range-thumb {
     font-size: 1rem;
 }
 
+/* Calendar View */
+.calendar-view {
+  padding: 1.5rem;
+}
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.calendar-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  text-align: center;
+  flex-grow: 1;
+}
+.calendar-nav-btn {
+  padding: 0;
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  color: var(--accent-color);
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: background-color 0.3s ease;
+}
+.calendar-nav-btn:hover {
+    background-color: #f8f5fe;
+}
+.calendar-grid {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+.calendar-grid th {
+    text-align: center;
+    padding-bottom: 1rem;
+    font-weight: 600;
+    color: var(--text-light-color);
+    font-size: 0.9rem;
+}
+.calendar-grid td {
+    border: 1px solid var(--border-color);
+    height: 110px;
+    vertical-align: top;
+    padding: 0;
+    transition: background-color 0.2s ease;
+}
+.calendar-day-cell {
+    cursor: pointer;
+}
+.calendar-day-cell:hover {
+    background-color: var(--bg-color);
+}
+.calendar-day-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5rem;
+    height: 100%;
+}
+.day-number {
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.2rem;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+.is-today .day-number {
+    background-color: var(--accent-color);
+    color: white;
+}
+.other-month .calendar-day-content {
+    color: #ccc;
+}
+.other-month {
+   background-color: #fcfcfc;
+}
+.log-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--secondary-color);
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+}
+
 /* Footer */
 .app-footer {
     text-align: center;
@@ -477,5 +577,17 @@ input[type="range"]::-moz-range-thumb {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .calendar-grid td {
+        height: 80px;
+    }
+    .calendar-header h3 {
+        font-size: 1.2rem;
+    }
+    .day-number {
+        font-size: 0.8rem;
     }
 }
