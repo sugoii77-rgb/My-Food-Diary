@@ -7,6 +7,7 @@ const translations = {
     dailyLog: "Daily Log",
     weeklyPlan: "Weekly Plan",
     analysis: "Analysis",
+    calendar: "Calendar",
     reset: "Reset Data",
     langToggle: "한글",
     date: "Date",
@@ -39,6 +40,7 @@ const translations = {
     dailyLog: "오늘의 기록",
     weeklyPlan: "주간 계획",
     analysis: "체중 분석",
+    calendar: "캘린더",
     reset: "데이터 초기화",
     langToggle: "EN",
     date: "날짜",
@@ -69,7 +71,7 @@ const translations = {
 };
 
 type Language = keyof typeof translations;
-type View = 'daily' | 'weekly' | 'analysis';
+type View = 'daily' | 'weekly' | 'analysis' | 'calendar';
 type MealType = 'breakfast' | 'lunch' | 'snack' | 'dinner';
 
 interface MealData {
@@ -586,6 +588,91 @@ const AnalysisView: React.FC<{
     );
 };
 
+const CalendarView: React.FC<{
+  dailyData: Record<string, DailyLogData>;
+  onDateSelect: (date: string) => void;
+  t: (key: keyof (typeof translations)['en']) => string | string[];
+}> = ({ dailyData, onDateSelect, t }) => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const handlePrevMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+  };
+
+  const weeks = useMemo(() => {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const firstDayOfMonth = new Date(year, month, 1);
+    const firstDayOfWeek = firstDayOfMonth.getDay(); // 0=Sun
+    const calendarStartDate = new Date(firstDayOfMonth);
+    calendarStartDate.setDate(calendarStartDate.getDate() - firstDayOfWeek);
+
+    const generatedWeeks: Date[][] = [];
+    for (let i = 0; i < 6; i++) {
+      const week: Date[] = [];
+      for (let j = 0; j < 7; j++) {
+        const day = new Date(calendarStartDate);
+        week.push(day);
+        calendarStartDate.setDate(calendarStartDate.getDate() + 1);
+      }
+      generatedWeeks.push(week);
+    }
+    return generatedWeeks;
+  }, [currentDate]);
+  
+  const today = new Date();
+  const todayString = today.toISOString().split('T')[0];
+  const lang = t('langToggle') === 'EN' ? 'ko-KR' : 'en-US';
+
+  return (
+    <div className="card calendar-view">
+      <div className="calendar-header">
+        <button onClick={handlePrevMonth} className="calendar-nav-btn" aria-label="Previous month">&lt;</button>
+        <h3>{currentDate.toLocaleString(lang, { year: 'numeric', month: 'long' })}</h3>
+        <button onClick={handleNextMonth} className="calendar-nav-btn" aria-label="Next month">&gt;</button>
+      </div>
+      <table className="calendar-grid">
+        <thead>
+          <tr>
+            {(t('dayNames') as string[]).map(day => <th key={day}>{day}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {weeks.map((week, i) => (
+            <tr key={i}>
+              {week.map((day, j) => {
+                const dateString = day.toISOString().split('T')[0];
+                const isCurrentMonth = day.getMonth() === currentDate.getMonth();
+                const isToday = dateString === todayString;
+                const hasLog = !!dailyData[dateString];
+
+                const cellClasses = [
+                  'calendar-day-cell',
+                  isCurrentMonth ? '' : 'other-month',
+                  isToday ? 'is-today' : ''
+                ].join(' ').trim();
+
+                return (
+                  <td key={j} className={cellClasses} onClick={() => onDateSelect(dateString)}>
+                    <div className='calendar-day-content'>
+                        <span className="day-number">{day.getDate()}</span>
+                        {hasLog && <div className="log-indicator"></div>}
+                    </div>
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
 
 const App = () => {
   const [lang, setLang] = useLocalStorage<Language>('foodDiary_lang', 'ko');
@@ -623,6 +710,11 @@ const App = () => {
           }
       }
   };
+  
+  const handleDateSelectFromCalendar = (date: string) => {
+    setSelectedDate(date);
+    setView('daily');
+  };
 
   return (
     <div className="app-container">
@@ -633,8 +725,9 @@ const App = () => {
             <button className={`nav-button ${view === 'daily' ? 'active' : ''}`} onClick={() => setView('daily')}>{t('dailyLog')}</button>
             <button className={`nav-button ${view === 'weekly' ? 'active' : ''}`} onClick={() => setView('weekly')}>{t('weeklyPlan')}</button>
             <button className={`nav-button ${view === 'analysis' ? 'active' : ''}`} onClick={() => setView('analysis')}>{t('analysis')}</button>
+            <button className={`nav-button ${view === 'calendar' ? 'active' : ''}`} onClick={() => setView('calendar')}>{t('calendar')}</button>
           </div>
-          <button className="control-button" onClick={handleReset} disabled={view === 'analysis'}>{t('reset')}</button>
+          <button className="control-button" onClick={handleReset} disabled={view === 'analysis' || view === 'calendar'}>{t('reset')}</button>
           <button className="control-button" onClick={toggleLang}>{t('langToggle')}</button>
         </div>
       </header>
@@ -643,6 +736,7 @@ const App = () => {
         {view === 'daily' && <DailyLog selectedDate={selectedDate} setSelectedDate={setSelectedDate} data={data} setData={setData} t={t} />}
         {view === 'weekly' && <WeeklyPlanner data={data} setData={setData} t={t} />}
         {view === 'analysis' && <AnalysisView data={data} t={t} />}
+        {view === 'calendar' && <CalendarView dailyData={data.daily} onDateSelect={handleDateSelectFromCalendar} t={t} />}
       </main>
 
       <footer className="app-footer">
