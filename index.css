@@ -1,0 +1,481 @@
+:root {
+  --font-en: 'Poppins', sans-serif;
+  --font-ko: 'Noto Sans KR', sans-serif;
+  --bg-color: #fdfaf6;
+  --primary-color: #eaddff;
+  --secondary-color: #d0bfff;
+  --text-color: #333;
+  --text-light-color: #555;
+  --border-color: #eee;
+  --card-bg: #fff;
+  --accent-color: #bfa2db;
+  --water-filled: #a0c4ff;
+  --water-empty: #e0e0e0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-en), var(--font-ko);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+#root {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Header and Navigation */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  color: var(--text-color);
+}
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 0.5rem;
+  background-color: #f0eafc;
+  border-radius: 8px;
+  padding: 0.3rem;
+}
+
+.nav-button,
+.control-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.nav-button.active {
+  background-color: var(--card-bg);
+  color: var(--accent-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.control-button {
+  background-color: var(--secondary-color);
+  color: var(--card-bg);
+}
+
+.control-button:hover:not(:disabled) {
+  background-color: var(--accent-color);
+}
+
+.control-button:disabled {
+    background-color: #f0f0f0;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+
+/* Main content */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* Card styling */
+.card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.card-title {
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Form elements */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-light-color);
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(191, 162, 219, 0.3);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.meal-time-input {
+    width: auto;
+    padding: 0.5rem;
+}
+
+/* Date Navigator */
+.date-navigator {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    flex-wrap: wrap;
+}
+.date-navigator-btn {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--text-light-color);
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    font-size: 0.9rem;
+}
+.date-navigator-btn:hover:not(:disabled) {
+    background-color: var(--secondary-color);
+}
+.date-navigator-btn:disabled {
+    background-color: #f0f0f0;
+    color: #aaa;
+    cursor: not-allowed;
+}
+.date-picker-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+.date-picker-container input[type="date"] {
+    border: none;
+    padding: 0.5rem;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    background-color: transparent;
+}
+.date-picker-container input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(70%) sepia(21%) saturate(1352%) hue-rotate(220deg) brightness(99%) contrast(90%);
+}
+.today-btn {
+    border: none;
+    background: none;
+    color: var(--accent-color);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0.2rem;
+}
+.today-btn:hover {
+    text-decoration: underline;
+}
+
+/* Daily Log Specifics */
+.daily-log-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.meal-card-container {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.meal-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.rating-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.rating-group .emoji-button {
+    font-size: 1.8rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.rating-group .emoji-button.selected,
+.rating-group .emoji-button:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+/* Water tracker */
+.water-tracker {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.water-tracker svg {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.water-tracker svg:hover {
+    transform: scale(1.1);
+}
+
+/* Sliders */
+.slider-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    background: #f0eafc;
+    border-radius: 5px;
+    outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--accent-color);
+    cursor: pointer;
+    border-radius: 50%;
+}
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--accent-color);
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+/* Weekly Planner */
+.weekly-planner-container .card {
+    overflow-x: auto;
+}
+.planner-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+.planner-table th,
+.planner-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border: 1px solid var(--border-color);
+    min-width: 150px;
+}
+.planner-table th {
+    background-color: #f8f5fe;
+    font-weight: 600;
+}
+.planner-table td {
+    background-color: var(--card-bg);
+}
+.planner-table textarea {
+    width: 100%;
+    border: none;
+    padding: 0;
+    resize: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.9rem;
+    min-height: 100px;
+}
+.planner-table textarea:focus {
+    outline: none;
+    box-shadow: none;
+}
+.date-cell {
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+/* Analysis View */
+.analysis-view {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.weight-chart-container {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
+}
+.weight-chart-container h4 {
+  margin: 0 0 1rem 0;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+.chart-wrapper {
+    position: relative;
+    width: 100%;
+}
+.chart-wrapper svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.chart-grid-line {
+  stroke: var(--border-color);
+  stroke-dasharray: 2,2;
+}
+.chart-axis-line {
+  stroke: var(--text-light-color);
+  stroke-width: 1px;
+}
+.chart-axis-text {
+  font-size: 11px;
+  fill: var(--text-light-color);
+}
+.chart-axis-label {
+    font-size: 12px;
+    font-weight: 600;
+    fill: var(--text-color);
+    text-anchor: middle;
+}
+.chart-line {
+  fill: none;
+  stroke: var(--accent-color);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.chart-point {
+  fill: var(--accent-color);
+  stroke: var(--card-bg);
+  stroke-width: 2;
+  cursor: pointer;
+  transition: r 0.2s ease;
+}
+.chart-tooltip {
+    background-color: var(--text-color);
+    color: var(--card-bg);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    text-align: center;
+}
+.tooltip-date {
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+}
+.tooltip-weight {
+    font-size: 1rem;
+}
+
+/* Footer */
+.app-footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-light-color);
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+    .daily-log-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .meal-card-container {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (min-width: 1024px) {
+    .meal-card-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
